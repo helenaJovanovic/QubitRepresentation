@@ -138,10 +138,10 @@ class PROGRAM:
             messagebox.showerror("Greska", "Nije kjubit")           #Inace iskace prozor sa greskom
 
     def pokreniIzracunaj(self):
-        fig = plt.figure(figsize=(8, 4)) #Pokrecemo prozor na kojem cemo da prikazemo prostor i podesavamo velicinu prozora
-        fig.canvas.set_window_title('Merenje')#Ime prozora
-        ax = plt.axes(projection='3d')#Ovde moramo da kazemo da zelimo da prikazemo 3d prostor
-        ax.set_axis_off()#Uklanjam ose koje se nalaze sa strane jer mi ne trebaju za ovaj prikaz
+        fig = plt.figure(figsize=(8, 4)) 
+        fig.canvas.set_window_title('Merenje')
+        ax = plt.axes(projection='3d')
+        ax.set_axis_off()
         ax.dist = 30#I posmatram prikaz sa daljine od 30
 
         ax.quiver(0, 0, 0, np.float64(4.0), 0, 0, length = 1, color="green", arrow_length_ratio = 0.05)
@@ -206,14 +206,14 @@ class PROGRAM:
         ax.text(0, 1.2, 1, 'M0 ', fontsize=14)#Naziv pored pravougaonika koji predstavlja operator merenja
         ax.text(-1, 1.9, 1, 'P0 = ' + str(np.float64(p0)), fontsize=14) #Rezultat racunanja p0
 
-        x = np.linspace(-1,1,2)#Definisem neke koordinate pravougaonika koji pravim
+        x = np.linspace(-1,1,2)
         y = np.linspace(-1,1,2)
 
-        X,Y = np.meshgrid(x,y)#Vraca koordinatne matrice od koordinatnih vektora (Nemam pojma iskreno)
-        Z=0*X + 0*Y + 1.0 #Z predstavlja 1 ne znam zasto ovo radim sebi
-        surf = ax.plot_surface(X, Y, Z, color=(0.94, 0.99, 0.16, 0.5))#Crtam pravougaonik u zutoj boji u 3d
+        X,Y = np.meshgrid(x,y)
+        Z=0*X + 0*Y + 1.0 
+        surf = ax.plot_surface(X, Y, Z, color=(0.94, 0.99, 0.16, 0.5))
         plt.show()#Onda prikazujem formiran prostor
    
       
         
-A = PROGRAM() #Pokrecemo klasu lol
+A = PROGRAM() 
