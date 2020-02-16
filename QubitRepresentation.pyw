@@ -1,19 +1,18 @@
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as axes3d
 from matplotlib import rc
 from tkinter import *
 from tkinter.ttk import *
-import threading
 from tkinter import messagebox
-
 
 
 class PROGRAM:
     def __init__(self):
         
-        self.root = Tk() 
-
+        self.root = Tk()
+        self.root.resizable(0, 0)
         #Promenjive koje sadrze ono sto je upisano u Entry
         self.AlfaR = DoubleVar()
         self.AlfaI = DoubleVar()
@@ -36,20 +35,25 @@ class PROGRAM:
         self.AlfaIEntry.place(x=380, y=50)
 
         label3 = Label(text = "Beta (Real part): ")
-        label3.place(x=50, y = 150)
+        label3.place(x=50, y = 120)
         self.BetaREntry = Entry(textvar=self.BetaR, width=5)
-        self.BetaREntry.place(x=180, y = 150)
+        self.BetaREntry.place(x=180, y = 120)
     
         label4 = Label(text = "(Imaginary part): ")
-        label4.place(x=250, y = 150)
+        label4.place(x=250, y = 120)
         self.BetaIEntry = Entry(textvar=self.BetaI, width=5)
-        self.BetaIEntry.place(x=380, y = 150)
+        self.BetaIEntry.place(x=380, y = 120)
 
+
+        label5 = Label(text = "The sum of absolute alpha squared and absolute beta squared must be 1!", background='green',  font='Helvetica 10 bold')
+        label5.place(x=15, y=200)
+        
+    
         self.button = Button(text="Bloch's sphere", command=self.Bloh) #Dugme koje ako prisinemo idemo na self.Bloh i pozivamo prikaz Blohove sfere
-        self.button.place(x=100, y=220)
+        self.button.place(x=100, y=250)
 
         self.button = Button(text="Calculate", command=self.Izracunaj) #Dugme, command je funkcija koja se poziva ako se pritisne.
-        self.button.place(x=325, y=220)
+        self.button.place(x=325, y=250)
         #Kada pritisnemo izracunaj idemo na funkciju self.Izracunaj
 
         #Pozivamo petlju koja ce da osvezava prikaz prozora i da ga menja ako treba
@@ -92,22 +96,23 @@ class PROGRAM:
     def Bloh(self):
 
         if(self.uslov()):
-            threading.Thread(target=self.pokreniBloh).start()   #Pokrecem odvojenu nit i u njoj prozor koji ce prikazivati Blohovu sferu
+            self.root.destroy()
+            self.pokreniBloh()
+            self.__init__()
+            
         else:
-            messagebox.showerror("Greska", "Nije kjubit")       #Inace ako nije kjubit iskace prozor za greske
+            messagebox.showerror("Error", "Not a  qubit")       #Inace ako nije kjubit iskace prozor za greske
     
     def pokreniBloh(self):
         u = np.linspace(0, np.pi, 15)                           #Definisemo vektore koji su specificni za sferu
         v = np.linspace(0, 2 * np.pi, 15)
-
-
 
         x = np.outer(np.sin(u), np.sin(v))#I mnozimo sinuse ovih vektora i kao povratnu vrednost dobijamo matricu 
         y = np.outer(np.sin(u), np.cos(v))
         z = np.outer(np.cos(u), np.ones_like(v))#np.ones_like -> Return an array of ones with the same shape and type as a given array.
 
         fig = plt.figure() #Konstruisemo prozor i prostor za prikaz
-        fig.canvas.set_window_title('Blohova sfera')
+        fig.canvas.set_window_title('Bloch sphere')
         ax = plt.axes(projection='3d')
 
         ax.set_axis_off()
@@ -133,13 +138,15 @@ class PROGRAM:
     def Izracunaj(self):
         
         if(self.uslov()):
-            threading.Thread(target=self.pokreniIzracunaj).start() #Pokrecemo funkciju unutar nove niti i tad se poziva prozor
+            self.root.destroy()
+            self.pokreniIzracunaj()
+            self.__init__()
         else:
-            messagebox.showerror("Greska", "Nije kjubit")           #Inace iskace prozor sa greskom
+            messagebox.showerror("Error", "Not a qubit")           #Inace iskace prozor sa greskom
 
     def pokreniIzracunaj(self):
         fig = plt.figure(figsize=(8, 4)) 
-        fig.canvas.set_window_title('Merenje')
+        fig.canvas.set_window_title('Measurement')
         ax = plt.axes(projection='3d')
         ax.set_axis_off()
         ax.dist = 30#I posmatram prikaz sa daljine od 30
