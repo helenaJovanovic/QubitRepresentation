@@ -1,6 +1,6 @@
 # QubitRepresentation
 
-Representation of a qubit on a Bloch sphere and measurement simulation.
+Representation of a quantum bit (qubit) on a Bloch sphere and measurement simulation.
 
 Prerequisites:
 - Python 3
